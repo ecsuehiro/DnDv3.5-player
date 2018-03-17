@@ -26,3 +26,36 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.player-form {
+  border-radius: 10px;
+  border: 1px solid black;
+  box-shadow: 2px 2px 10px #888888;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 3%;
+  width: 50%;
+}
+
+.btn-submitForm{
+  margin-top: 50px;
+}
+
+.btn-cancelForm{
+  margin-top: 50px;
+  margin-left: 20px;
+}
+
+.nav-appNav{
+  background-color: transparent;
+  height: 40px;
+  line-height: 40px;
+  box-shadow: 0px 0px 0px transparent;
+  position:absolute;
+}
+
+.div-monsterList{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 3%;
+}

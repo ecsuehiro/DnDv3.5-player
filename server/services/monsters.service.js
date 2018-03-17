@@ -9,24 +9,24 @@ module.exports = {
     readById: _readById,
     create: _create,
     update: _update,
-    delete: _delete
+    deactivate: _deactivate
 }
 
 function _read() {
-    return conn.db().collection("players").find({ dateDeleted: null }).toArray()
-        .then(players => {
-            return players
-        })
-        .catch(err => {
-            console.warn(err)
-            return Promise.reject(err)
-        })
+    return conn.db().collection("monsters").find({ dateDeactivated: null }).toArray()
+    .then(monsters => {
+        return monsters
+    })
+    .catch(err => {
+        console.warn(err)
+        return Promise.reject(err)
+    })
 }
 
 function _readById(id) {
-    return conn.db().collection("players").findOne({ _id: new ObjectId(id), dateDeleted: null })
-        .then(player => {
-            return player
+    return conn.db().collection("monsters").findOne({ _id: new ObjectId(id), dateDeleted: null })
+        .then(monster => {
+            return monster
         })
         .catch(err => {
             console.warn(err)
@@ -36,12 +36,10 @@ function _readById(id) {
 
 function _create(data) {
     const safeDoc = {
-        playerName: data.playerName,
-        characterName: data.characterName,
-        race: data.race,
-        class: data.class,
-        level: data.level,
+        name: data.name,
+        description: data.description,
         hp: data.hp,
+        armor: data.armor,
         stats: {
             strength: data.stats.strength,
             dexterity: data.stats.dexterity,
@@ -54,15 +52,15 @@ function _create(data) {
             will: data.stats.will
         },
         baseAttack: data.baseAttack,
-        weapons: [],
+        fullAttack: data.fullAttack,
+        specialQualities: [],
         skills: [],
         feats: [],
-        abilities: [],
         dateDeleted: null
     }
 
-    return conn.db().collection("players").insertOne(safeDoc)
-        .then(player => player.insertedId.toString())
+    return conn.db().collection("monsters").insertOne(safeDoc)
+        .then(monster => monster.insertedId.toString())
         .catch(err => {
             console.warn(err)
             return Promise.reject(err)
@@ -72,8 +70,10 @@ function _create(data) {
 function _update(id, data) {
     const safeDoc = {
         $set: {
-            level: data.level,
+            name: data.name,
+            description: data.description,
             hp: data.hp,
+            armor: data.armor,
             stats: {
                 strength: data.stats.strength,
                 dexterity: data.stats.dexterity,
@@ -86,24 +86,25 @@ function _update(id, data) {
                 will: data.stats.will
             },
             baseAttack: data.baseAttack,
-            weapons: [],
+            fullAttack: data.fullAttack,
+            specialQualities: [],
             skills: [],
             feats: [],
-            abilities: []
+            dateDeleted: null
         }
     }
 
-    return conn.db().collection("players").updateOne({ _id: new ObjectId(id) }, safeDoc)
-        .then(player => player.matchedCount)
+    return conn.db().collection("monsters").updateOne({ _id: new ObjectId(id) }, safeDoc)
+        .then(monster => monster.matchedCount)
         .catch(err => {
             console.warn(err)
             return Promise.reject(err)
         })
 }
 
-function _delete(id) {
-    return conn.db().collection("players").updateOne({ _id: new ObjectId(id) }, { $set: { dateDeleted: new Date() } })
-        .then(player => player.matchedCount)
+function _deactivate(id) {
+    return conn.db().collection("monsters").updateOne({ _id: new ObjectId(id) }, { $set: { dateDeleted: new Date() } })
+        .then(monster => monster.matchedCount)
         .catch(err => {
             console.warn(err)
             return Promise.reject(err)

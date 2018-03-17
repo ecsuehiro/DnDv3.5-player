@@ -1,35 +1,35 @@
 "use strict"
 
-const playersService = require('../services/players.service')
+const featsService = require('../services/feats.service')
 
 let _apiPrefix
 
 module.exports = apiPrefix => {
     _apiPrefix = apiPrefix
     return {
-        read: _read,
+        read:_read,
         readById: _readById,
         create: _create,
         update: _update,
-        delete: _delete
+        deactivate: _deactivate
     }
 }
 
 function _read(req, res) {
-    playersService.read()
-        .then(players => {
-            res.json(players)
-        })
-        .catch(err => {
-            console.warn(err)
-            res.status(500).send(err)
-        })
+    featsService.read()
+    .then(response => {
+        res.json(response)
+    })
+    .catch(err => {
+        console.warn(err)
+        res.status(500).send(err)
+    })
 }
 
 function _readById(req, res) {
-    playersService.readById(req.params.id)
-        .then(player => {
-            res.json(player)
+    featsService.readById(req.params.id)
+        .then(feat => {
+            res.json(feat)
         })
         .catch(err => {
             console.warn(err)
@@ -38,7 +38,7 @@ function _readById(req, res) {
 }
 
 function _create(req, res) {
-    playersService.create(req.body)
+    featsService.create(req.body)
         .then(response => {
             res.status(201).json(response)
         })
@@ -49,7 +49,7 @@ function _create(req, res) {
 }
 
 function _update(req, res) {
-    playersService.update(req.params.id, req.body)
+    featsService.update(req.params.id, req.body)
         .then(response => {
             res.status(200).json(response)
         })
@@ -59,8 +59,8 @@ function _update(req, res) {
         })
 }
 
-function _delete(req, res) {
-    playersService.delete(req.params.id)
+function _deactivate(req, res) {
+    featsService.delete(req.params.id)
         .then(response => {
             res.status(200).json(response)
         })
