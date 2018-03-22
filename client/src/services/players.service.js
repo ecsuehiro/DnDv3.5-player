@@ -1,30 +1,30 @@
 import axios from 'axios'
 
-export function read() {
+export function readPlayers() {
     return axios.get(`${process.env.REACT_APP_BACKEND_ORIGIN}/api/players`)
         .then(onSuccess)
         .catch(onError)
 }
 
-export function readById(id) {
+export function readPlayerById(id) {
     return axios.get(`${process.env.REACT_APP_BACKEND_ORIGIN}/api/players/${id}`)
     .then(onSuccess)
     .catch(onError)
 }
 
-export function create(data) {
+export function createPlayer(data) {
     return axios.post(process.env.REACT_APP_BACKEND_ORIGIN + '/api/players', data)
     .then(onSuccess)
     .catch(onError)
 }
 
-export function update(id, data) {
+export function updatePlayer(id, data) {
     return axios.put(process.env.REACT_APP_BACKEND_ORIGIN + `/api/players/${id}`, data)
     .then(onSuccess)
     .catch(onError)
 }
 
-export function deactivate(id) {
+export function deactivatePlayer(id) {
     return axios.delete(process.env.REACT_APP_BACKEND_ORIGIN + `/api/players/${id}`)
     .then(onSuccess)
     .catch(onError)

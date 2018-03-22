@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react'
-import MonsterTable from './monster.table'
-import { readMonsters } from './services/monsters.service'
+import PlayerTable from './player.table'
+import { readPlayers } from './services/players.service'
 
-export default class Monster extends PureComponent {
+export default class PlayerList extends PureComponent {
     state = {
-        tableData: ""
+        tableData: ''
     }
 
+
     componentDidMount = () => {
-        readMonsters()
+        readPlayers()
             .then(response => {
                 this.setState({
                     tableData: response.data
@@ -20,12 +21,11 @@ export default class Monster extends PureComponent {
     }
 
     render() {
-
         return (
             <div>
-                <h3>Monster Compendium</h3>
-                <div className="div-monsterList">
-                    <MonsterTable tableData={this.state.tableData} />
+                <h3 className="title">Character List</h3>
+                <div className="div-playerList">
+                    <PlayerTable tableData={this.state.tableData} />
                 </div>
             </div>
         )

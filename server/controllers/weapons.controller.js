@@ -8,6 +8,7 @@ module.exports = apiPrefix => {
     _apiPrefix = apiPrefix
     return {
         read:_read,
+        readWeaponIds: _readWeaponIds,
         readById: _readById,
         create: _create,
         update: _update,
@@ -17,6 +18,17 @@ module.exports = apiPrefix => {
 
 function _read(req, res) {
     weaponsService.read()
+    .then(response => {
+        res.json(response)
+    })
+    .catch(err => {
+        console.warn(err)
+        res.status(500).send(err)
+    })
+}
+
+function _readWeaponIds(req, res){
+    weaponsService.readWeaponIds()
     .then(response => {
         res.json(response)
     })

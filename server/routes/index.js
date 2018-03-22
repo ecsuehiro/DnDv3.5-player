@@ -10,12 +10,14 @@ const monstersApiPrefix = '/api/monsters'
 const weaponsApiPrefix = '/api/weapons'
 const skillsApiPrefix = '/api/skills'
 const featsApiPrefix = '/api/feats'
+const optionsApiPrefix = '/api/options'
 
 const playersRoutes = require('./players.routes')(playersApiPrefix)
 const monstersRoutes = require('./monsters.routes')(monstersApiPrefix)
 const weaponsRoutes = require('./weapons.routes')(weaponsApiPrefix)
 const skillsRoutes = require('./skills.routes')(skillsApiPrefix)
 const featsRoutes = require('./feats.routes')(featsApiPrefix)
+const optionsRoutes = require('./options.routes')(optionsApiPrefix)
 
 // Misc require
 const authenticate = require("../filters/authenticate")
@@ -33,7 +35,7 @@ router.use(monstersApiPrefix, monstersRoutes)
 router.use(weaponsApiPrefix, weaponsRoutes)
 router.use(skillsApiPrefix, skillsRoutes)
 router.use(featsApiPrefix, featsRoutes)
-
+router.use(optionsApiPrefix, optionsRoutes)
 
 // API error handlers (API routes must be registered before this)
 useAPIErrorHandlers(router)

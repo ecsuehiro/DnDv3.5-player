@@ -6,6 +6,7 @@ const ObjectId = mongodb.ObjectId
 
 module.exports = {
     read: _read,
+    readSkillIds: _readSkillIds,
     readById: _readById,
     create: _create,
     update: _update,
@@ -14,6 +15,23 @@ module.exports = {
 
 function _read() {
     return conn.db().collection("skills").find({ dateDeleted: null }).toArray()
+        .then(skills => {
+            return skills
+        })
+        .catch(err => {
+            console.warn(err)
+            return Promise.reject(err)
+        })
+}
+
+function _readSkillIds() {
+    return conn.db().collection("skills").aggregate([
+        {
+            $project: {
+                skillName: 1
+            }
+        }
+    ]).toArray()
         .then(skills => {
             return skills
         })
@@ -37,9 +55,10 @@ function _readById(id) {
 function _create(data) {
     const safeDoc = {
         skillName: data.skillName,
-        classes: data.classes,
         modifier: data.modifier,
-        description: data.description
+        description: data.description,
+        classes: [],
+        dateDeleted: null
     }
 
     return conn.db().collection("skills").insertOne(safeDoc)
@@ -54,9 +73,9 @@ function _update(id, data) {
     const safeDoc = {
         $set: {
             skillName: data.skillName,
-            classes: data.classes,
             modifier: data.modifier,
-            description: data.description
+            description: data.description,
+            classes: [],
         }
     }
 

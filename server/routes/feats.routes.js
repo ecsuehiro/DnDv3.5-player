@@ -1,7 +1,7 @@
 "use strict"
 
 const router = require('express').Router()
-const featsControllersFactory = require('../controllers/skills.controller')
+const featsControllersFactory = require('../controllers/feats.controller')
 
 module.exports = apiPrefix => {
     const featsController = featsControllersFactory(apiPrefix)

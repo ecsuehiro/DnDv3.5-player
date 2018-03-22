@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 5s linear;
   height: 80px;
 }
 
@@ -27,6 +27,16 @@
   to { transform: rotate(360deg); }
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+div.App {
+  flex: 1 0 auto;
+}
+
 .player-form {
   border-radius: 10px;
   border: 1px solid black;
@@ -38,11 +48,11 @@
 }
 
 .btn-submitForm{
-  margin-top: 50px;
+  margin-top: 15%;
 }
 
 .btn-cancelForm{
-  margin-top: 50px;
+  margin-top: 15%;
   margin-left: 20px;
 }
 
@@ -54,8 +64,67 @@
   position:absolute;
 }
 
+.nav-widthReset{
+  width: auto;
+}
+
+.div-heightReset{
+  height: auto;
+}
+
 .div-monsterList{
-  margin-top: 2%;
+  /* margin-top: 2%; */
   margin-bottom: 2%;
+  min-height: 100vh;
+  padding: 2%;
+}
+
+.div-formSelect{
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.div-playerList{
+  /* margin-top: 2%; */
+  margin-bottom: 2%;
+  min-height: 100vh;
+  padding: 2%;
+}
+
+.div-homePage{
+  margin-top: 2%;
   padding: 3%;
+}
+
+.carousel-height{
+  min-height: auto;
+}
+
+img.homepage-image-slider{
+  min-height: 50vh;
+  min-width: 50vw;
+  position: relative;
+}
+
+.icon-diceRoll{
+    position: absolute;
+    width: 3rem;
+    font-size: 2rem;
+    transition: color .2s;
+}
+
+.label-diceRoll{
+  width: calc(100% - 3rem - 1.5rem);;
+  margin-left: 3rem;
+}
+
+input.input-diceRoll{
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem);
+  text-align: center;
+}
+
+div.div-extend{
+  min-height: 28vh;
 }

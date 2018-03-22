@@ -6,6 +6,7 @@ const ObjectId = mongodb.ObjectId
 
 module.exports = {
     read: _read,
+    readWeaponIds: _readWeaponIds,
     readById: _readById,
     create: _create,
     update: _update,
@@ -14,6 +15,23 @@ module.exports = {
 
 function _read() {
     return conn.db().collection("weapons").find({ dateDeleted: null }).toArray()
+        .then(weapons => {
+            return weapons
+        })
+        .catch(err => {
+            console.warn(err)
+            return Promise.reject(err)
+        })
+}
+
+function _readWeaponIds() {
+    return conn.db().collection("weapons").aggregate([
+        {
+            $project: {
+                weaponName: 1
+            }
+        }
+    ]).toArray()
         .then(weapons => {
             return weapons
         })
@@ -42,7 +60,8 @@ function _create(data) {
         crit: data.crit,
         range: data.range,
         type: data.type,
-        notes: data.notes
+        notes: data.notes,
+        dateDeleted: null
     }
 
     return conn.db().collection("weapons").insertOne(safeDoc)

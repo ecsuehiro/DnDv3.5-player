@@ -7,6 +7,7 @@ module.exports = apiPrefix => {
     const weaponsController = weaponsControllersFactory(apiPrefix)
 
     router.get('/', weaponsController.read)
+    router.get('/weapon-ids', weaponsController.readWeaponIds)
     router.get('/:id([0-9a-fA-F]{24})', weaponsController.readById)
     router.post('/', weaponsController.create)
     router.put('/:id([0-9a-fA-F]{24})', weaponsController.update)

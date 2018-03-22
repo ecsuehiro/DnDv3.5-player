@@ -7,6 +7,7 @@ const ObjectId = mongodb.ObjectId
 module.exports = {
     read: _read,
     readById: _readById,
+    readFeatIds: _readFeatIds,
     create: _create,
     update: _update,
     delete: _delete
@@ -21,6 +22,23 @@ function _read() {
             console.warn(err)
             return Promise.reject(err)
         })
+}
+
+function _readFeatIds(){
+    return conn.db().collection("feats").aggregate([
+        {
+            $project: {
+                featName: 1
+            }
+        }
+    ]).toArray()
+    .then(feats => {
+        return feats
+    })
+    .catch(err => {
+        console.warn(err)
+        return Promise.reject(err)
+    })
 }
 
 function _readById(id) {
@@ -38,7 +56,8 @@ function _create(data) {
     const safeDoc = {
         featName: data.featName,
         prerequisites: data.prerequisites,
-        benefit: data.benefit
+        benefit: data.benefit,
+        dateDeleted: null
     }
 
     return conn.db().collection("feats").insertOne(safeDoc)

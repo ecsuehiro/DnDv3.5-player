@@ -7,6 +7,7 @@ module.exports = apiPrefix => {
     const skillsController = skillsControllersFactory(apiPrefix)
 
     router.get('/', skillsController.read)
+    router.get('/skill-ids', skillsController.readSkillIds)
     router.get('/:id([0-9a-fA-F]{24})', skillsController.readById)
     router.post('/', skillsController.create)
     router.put('/:id([0-9a-fA-F]{24})', skillsController.update)
