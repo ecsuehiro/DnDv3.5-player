@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+export function readWeapons() {
+    return axios.get(`${process.env.REACT_APP_BACKEND_ORIGIN}/api/weapons`)
+        .then(onSuccess)
+        .catch(onError)
+}
+
 export function readWeaponIds() {
     return axios.get(`${process.env.REACT_APP_BACKEND_ORIGIN}/api/weapons/weapon-ids`)
         .then(onSuccess)

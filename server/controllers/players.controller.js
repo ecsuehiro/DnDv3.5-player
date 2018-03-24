@@ -27,7 +27,7 @@ function _read(req, res) {
 }
 
 function _readById(req, res) {
-    playersService.readById(req.params.id)
+    playersService.readPlayerWithOptions(req.params.id)
         .then(player => {
             res.json(player)
         })

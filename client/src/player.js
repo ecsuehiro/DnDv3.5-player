@@ -3,6 +3,7 @@ import { Button } from 'react-materialize'
 import { createPlayer } from './services/players.service'
 import { readAllOptions } from './services/options.service'
 import { Redirect } from 'react-router-dom'
+import PlayerModal from './player.modal'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 
@@ -45,6 +46,7 @@ class CreatePlayer extends PureComponent {
             characterName: "",
             race: "",
             class: "",
+            hp: "",
             level: "",
             stats: {
                 strength: "",
@@ -63,7 +65,9 @@ class CreatePlayer extends PureComponent {
             feats: [],
             abilities: []
         },
-        redirect: false
+        redirect: false,
+        modal: false,
+        name: ""
     }
 
     playerInputChange = (event) => {
@@ -81,7 +85,6 @@ class CreatePlayer extends PureComponent {
         })
     }
 
-
     playerStatChange = (event) => {
         let target = event.target
         let value = target.value
@@ -98,9 +101,13 @@ class CreatePlayer extends PureComponent {
     }
 
     handleWeaponChange = (selectedOption) => {
+        let weaponIds = []
+        for (let i = 0; i < selectedOption.length; i++) {
+            weaponIds.push(selectedOption[i].value)
+        }
         this.setState(prevState => {
             let newState = { ...prevState.formData }
-            newState.weapons = selectedOption
+            newState.weapons = weaponIds
 
             return {
                 formData: newState
@@ -109,9 +116,18 @@ class CreatePlayer extends PureComponent {
     }
 
     handleSkillChange = (selectedOption) => {
+        let skillIds = []
+        selectedOption.skillRank = 0
+        for (let i = 0; i < selectedOption.length; i++) {
+            skillIds.push({
+                value: selectedOption[i].value,
+                rank: selectedOption.skillRank,
+                label: selectedOption[i].label
+            })
+        }
         this.setState(prevState => {
             let newState = { ...prevState.formData }
-            newState.skills = selectedOption
+            newState.skills = skillIds
 
             return {
                 formData: newState
@@ -120,9 +136,13 @@ class CreatePlayer extends PureComponent {
     }
 
     handleFeatChange = (selectedOption) => {
+        let featIds = []
+        for (let i = 0; i < selectedOption.length; i++) {
+            featIds.push(selectedOption[i].value)
+        }
         this.setState(prevState => {
             let newState = { ...prevState.formData }
-            newState.feats = selectedOption
+            newState.feats = featIds
 
             return {
                 formData: newState
@@ -131,13 +151,34 @@ class CreatePlayer extends PureComponent {
     }
 
     handleAbilityChange = selectedOption => {
+        let abilityIds = []
+        for (let i = 0; i < selectedOption.length; i++) {
+            abilityIds.push(selectedOption[i].value)
+        }
         this.setState(prevState => {
             let newState = { ...prevState.formData }
-            newState.abilities = selectedOption
+            newState.abilities = abilityIds
 
             return {
                 formData: newState
             }
+        })
+    }
+
+    openModal = (event) => {
+        const target = event.target
+        const name = target.name
+
+        this.setState({
+            modal: true,
+            name: name
+        })
+    }
+
+    closeModal = () => {
+        this.setState({
+            modal: false,
+            name: ""
         })
     }
 
@@ -174,7 +215,6 @@ class CreatePlayer extends PureComponent {
         event.preventDefault()
         createPlayer(this.state.formData)
             .then(response => {
-                console.log(response)
                 this.setState({
                     redirect: true
                 })
@@ -185,25 +225,49 @@ class CreatePlayer extends PureComponent {
     }
 
     render() {
-        let weaponOptions = this.props.weapons.map(item => {
-            return {
-                label: item.weaponName,
-                value: item._id
-            }
-        })
-        let skillOptions = this.props.skills.map(item => {
-            return {
-                label: item.skillName,
-                value: item._id
-            }
-        })
-        let featOptions = this.props.feats.map(item => {
-            return {
-                label: item.featName,
-                value: item._id
-            }
-        })
+        let weaponOptions = [].concat(this.props.weapons)
+            .sort((a, b) => {
+                if (a.weaponName < b.weaponName) return -1;
+                if (a.weaponName > b.weaponName) return 1;
+                return 0;
+            })
+            .map(item => {
+                return {
+                    label: item.weaponName,
+                    value: item._id
+                }
+            })
+        let skillOptions = [].concat(this.props.skills)
+            .sort((a, b) => {
+                if (a.skillName < b.skillName) return -1;
+                if (a.skillName > b.skillName) return 1;
+                return 0;
+            })
+            .map(item => {
+                return {
+                    label: item.skillName,
+                    value: item._id
+                }
+            })
+        let featOptions = [].concat(this.props.feats)
+            .sort((a, b) => {
+                if (a.featName < b.featName) return -1;
+                if (a.featName > b.featName) return 1;
+                return 0;
+            })
+            .map(item => {
+                return {
+                    label: item.featName,
+                    value: item._id
+                }
+            })
+
         let abilityOptions = []
+
+        let modal
+        if (this.state.modal === true) {
+            modal = <PlayerModal show={this.state.modal} name={this.state.name} close={this.closeModal} />
+        }
 
         if (this.state.redirect === true) {
             return <Redirect to='/player-list' />
@@ -212,6 +276,7 @@ class CreatePlayer extends PureComponent {
         return (
             <div>
                 <div className="container player-form">
+                    {modal}
                     <form>
                         <div className="row">
                             <div>
@@ -228,6 +293,10 @@ class CreatePlayer extends PureComponent {
                             <div className="input-field col s1">
                                 <label>Level</label>
                                 <input type="number" name="level" value={this.state.formData.level} onChange={this.playerInputChange} />
+                            </div>
+                            <div className="input-field col s2">
+                                <label>HP</label>
+                                <input type="number" name="hp" value={this.state.formData.hp} onChange={this.playerInputChange} />
                             </div>
                             <div className="input-field col s3">
                                 <label>Race</label>
@@ -316,6 +385,9 @@ class CreatePlayer extends PureComponent {
                                     value={this.state.formData.weapons}
                                 />
                             </div>
+                            <Button type="button" name="weapons" className="btn waves-effect waves-light button-lowerHeight" onClick={this.openModal}>View Weapons</Button>
+                        </div>
+                        <div className='row'>
                             <div className="section div-formSelect input-field col s8">
                                 <Select
                                     name="skills"
@@ -327,6 +399,9 @@ class CreatePlayer extends PureComponent {
                                     value={this.state.formData.skills}
                                 />
                             </div>
+                            <Button type="button" name="skills" className="btn waves-effect waves-light button-lowerHeight" onClick={this.openModal}>View Skills</Button>
+                        </div>
+                        <div className='row'>
                             <div className="section div-formSelect input-field col s8">
                                 <Select
                                     name="feats"
@@ -338,6 +413,9 @@ class CreatePlayer extends PureComponent {
                                     value={this.state.formData.feats}
                                 />
                             </div>
+                            <Button type="button" name="feats" className="btn waves-effect waves-light button-lowerHeight" onClick={this.openModal}>View Feats</Button>
+                        </div>
+                        <div className='row'>
                             <div className="section div-formSelect input-field col s8">
                                 <Select
                                     name="abilities"
@@ -349,11 +427,12 @@ class CreatePlayer extends PureComponent {
                                     value={this.state.formData.abilities}
                                 />
                             </div>
+                            <Button type="button" name="abilities" className="btn waves-effect waves-light button-lowerHeight" onClick={this.openModal}>View Abilities</Button>
                         </div>
                         <Button type="submit" className="btn waves-effect waves-light btn-submitForm" onClick={this.submitCharacter}>Submit Character
                             <i className="material-icons right">send</i>
                         </Button>
-                        <Button type="submit" className="btn red waves-effect waves-light btn-cancelForm" onClick={this.cancelCreate}>Cancel
+                        <Button type="submit" className="btn red waves-effect waves-light btn-cancelForm" onClick={() => this.setState({ redirect: true })}>Cancel
                             <i className="material-icons right">close</i>
                         </Button>
                     </form>

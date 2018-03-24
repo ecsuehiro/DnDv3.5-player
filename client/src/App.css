@@ -128,3 +128,32 @@ input.input-diceRoll{
 div.div-extend{
   min-height: 28vh;
 }
+
+.button-lowerHeight{
+  margin-top: 3%;
+  width: 25%;
+}
+
+div.div-optionBox{
+  border: 1px solid black;
+  padding: 2%;
+  border-radius: 10px;
+  /* min-height: 357px !important;
+  max-height: 357px !important; */
+  height: 250px !important;
+  margin: 1%;
+}
+
+div.div-skillBox{
+  border: 1px solid black;
+  padding: 2%;
+  border-radius: 10px;
+  margin: 2%;
+}
+
+div.div-featBox{
+  border: 1px solid black;
+  padding: 2%;
+  border-radius: 10px;
+  margin: 2%;
+}

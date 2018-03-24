@@ -7,6 +7,7 @@ import Home from './home'
 import Player from './player'
 import Monster from './monster'
 import PlayerList from './player.list'
+import PlayerSheet from './player.sheet'
 
 dotenv.config()
 
@@ -45,6 +46,7 @@ class App extends PureComponent {
             <Switch>
               <Route path="/player" component={Player} />
               <Route path="/player-list" component={PlayerList} />
+              <Route path="/player-sheet/:id" component={PlayerSheet} />
               <Route path="/monster" component={Monster} />
               <Route path="/" component={Home} />
             </Switch>

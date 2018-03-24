@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class PlayerList extends PureComponent {
 
@@ -19,6 +20,9 @@ export default class PlayerList extends PureComponent {
 
         return (
             <div>
+
+                <Link to="/player-sheet/5ab40b5ce9979626a4dc619c">Press Me</Link>
+
                 <table className="table hover bordered responsive">
                     <thead>
                         <tr>
